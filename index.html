@@ -1,0 +1,281 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>生成AI×LINE×kintoneでみんながハッピーになるAI施設予約アプリを作ろう【LINE 設定編】</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="20240724LINEkintone"
+                  title="生成AI×LINE×kintoneでみんながハッピーになるAI施設予約アプリを作ろう【LINE 設定編】"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="本日のゴール" duration="0">
+        <p class="image-container"><img style="width: 624.00px" src="img\\4cf02a844ccf047c.png"></p>
+<p><a href="https://docs.google.com/presentation/d/1ImRCbUWJxGd17GpVS5fyqAT1RluAXhyKewA0o8PT5WQ/edit?usp=sharing" target="_blank">拡大図</a></p>
+<p>ユーザーがLINE公式アカウントに会議室について、問い合わせを行い、まずはkintoneに会議室の情報を問い合わせ、その情報と問い合わせをChatGPTに送り、何を実行するかを判断、その情報をもとにkintoneに実行し、結果をLINEに返すというものを作成します。</p>
+<p class="image-container"><img style="width: 280.82px" src="img\\801c07c9406f89d5.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="LINE Developers への登録" duration="0">
+        <h2 is-upgraded>LINE Developers（<a href="https://developers.line.biz/ja/" target="_blank">https://developers.line.biz/ja/</a><strong>）からログイン</strong></h2>
+<p class="image-container"><img style="width: 624.00px" src="img\\b38d9d036ed9e327.png"></p>
+<h2 is-upgraded><strong>アカウントを入力</strong></h2>
+<pre>LINEアカウント・・・・・ 現在、利用しているLINEと連携することができます。
+ビジネスアカウント・・・ メールアドレスで登録することができます。</pre>
+<p>※LINEアカウントだと、スマホでQRコードを読み取ってログインができるなど簡単なのでおすすめです。</p>
+<aside class="special"><p>アカウントをお持ちの方は、ログインして次の項目のチャネル作成に進んでください。</p>
+</aside>
+<p>アカウントをお持ちでないかたは、これからアカウントを作成します。</p>
+<h3 is-upgraded><strong>アカウントの新規作成</strong></h3>
+<p> ① 初めての方は「アカウントの作成」を押下してください。</p>
+<p class="image-container"><img style="width: 371.00px" src="img\\72818972f2a31249.png"></p>
+<p> ②「LINEアカウントで登録」または「メールアドレスで登録」を選択してください。</p>
+<aside class="special"><p>LINEアカウントで登録のほうがQRコードログインでいけるので簡単です。個人のLINEアカウントと連携します。</p>
+</aside>
+<p>LINEアカウントで登録は簡単ですので、こちらでは、メールアドレスで登録の説明をします。</p>
+<p class="image-container"><img style="width: 436.00px" src="img\\67f814eb072f9bef.png"></p>
+<p>③登録するメールアドレスを入力してください。</p>
+<p class="image-container"><img style="width: 357.58px" src="img\\a2267bcb3b7ad5ca.png"></p>
+<p>④入力したメールアドレスに登録確認メールが届きますので「登録画面に進む」を押してください。</p>
+<p class="image-container"><img style="width: 512.00px" src="img\\625356f886eaca6.png"></p>
+<p>⑤名前とパスワードを入力して登録してください。</p>
+<p class="image-container"><img style="width: 333.00px" src="img\\44deccd44d63f30a.png"></p>
+<p>⑥登録確認画面で「登録」を押下</p>
+<p class="image-container"><img style="width: 403.00px" src="img\\c2d7990f51f0353c.png"></p>
+<p>⑦ユーザー登録が完了しました。LINE DevelopersIDの作成を行います</p>
+<p class="image-container"><img style="width: 456.00px" src="img\\3583149969fff6f1.png"></p>
+<p>⑧LINE開発者登録</p>
+<p>開発者名とメールアドレスを入力し、LINE開発者契約の内容を確認しチェックをいれ、アカウントを作成します。</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\584ffc3ee1246335.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="チャネル作成" duration="0">
+        <h2 is-upgraded><strong>新規プロバイダーを作成</strong></h2>
+<p>新規プロバイダーを作成します。プロダイバーは1つのアカウントにつき10個までの制限があります。同じプロダイバー内では同じユーザーIDが利用されます。</p>
+<p>ややこしいことを書いておりますが、ハンズオンなどで外部に公開しない場合は、プロダイバーの個数に上限があるため、新規で作成せずに既存のプロダイバーを利用することをお勧めいたします。</p>
+<h2 is-upgraded><img style="width: 624.00px" src="img\\e8ec5528cac0f48d.png"></h2>
+<h2 is-upgraded><strong>チャネル作成</strong></h2>
+<p>チャネル設定で「Messaging API」を選択</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\ec8a1fad93e7a565.png"></p>
+<p>チャネルを作成します。</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\99db3010645b7b2e.png"></p>
+<pre>・チャネルの種類
+ MessagingAPI（自動で選択済み）
+・プロバイダー
+ 先ほど作成したプロバイダー（自動で選択済み）
+・会社・事業者の所在国・地域
+ 【日本】を選択
+・チャネルアイコン
+ 今回のチャネルのアイコンを設定できます。
+ 特にない場合は選択無しでも、後ほど設定できます。
+・チャネル名
+ 20230902ハンズオン
+ など、任意のチャネル名を設定してください。
+・チャネルの説明
+ 簡単な説明をいれます。チャネル名と同じでも問題ありません。
+・大業種
+ 個人
+・小業種
+ 個人（その他）
+・メールアドレス
+ 自動入力済み
+・プライバリーポリシーURL
+ サービス利用規約URL
+ 今回は空欄。</pre>
+<p><strong>「LINE公式アカウント利用規約」</strong>と<strong>「LINE公式アカウントAPI利用規約」</strong>にチェックをいれ作成ボタンを押します。</p>
+<p>確認画面がでますので確認をしてＯＫボタンを押下します。</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\2e6362266f60be35.png"></p>
+<h3 is-upgraded><strong>【情報利用に関する同意について】を読み【同意する】を押下</strong></h3>
+<p class="image-container"><img style="width: 624.00px" src="img\\dd3680396b52ff8b.png"></p>
+<h3 is-upgraded><strong>ZHDグループへの情報提供に関する個別規約への同意についてを読み【同意する】を押下</strong></h3>
+<aside class="warning"><p>一番下までスクロールしないと【同意する】ボタンが押せません。</p>
+</aside>
+<p>これでLINE DevelopersからLINE公式アカウントの作成が完了しました。<img style="width: 624.00px" src="img\\671685e47955a35d.png"></p>
+<p>これでアカウントが完成しました。</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\8c2f7645011abf1c.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="MessagingAPI設定" duration="0">
+        <aside class="special"><p>ここから少し聞きなれない言葉が出てくるかもしれませんが、難しくありませんのでご安心ください。</p>
+</aside>
+<h2 is-upgraded><strong>チャネルアクセストークンの発行</strong></h2>
+<p>このチャネルと後ほど作成するGAS(Google Apps Script)をつなぐ認証キーを発行します。</p>
+<p>先ほどの画面で<strong>「MessagingAPI設定」</strong>タブを押し、下部にある「チャネルアクセストークン(長期)」の発行ボタンを押します。すると長い文字列が表示されます。これが「チャネルアクセストークン」となり、認証に使われる文字列となります。外部に漏れると、このLINEチャネルが悪用される恐れがありますので、ご注意ください。</p>
+<p>この発行されたチャネルアクセストークンをメモしてください。</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\1ed65c0ade2f6fb9.png"></p>
+<h2 is-upgraded><strong>webhook設定</strong></h2>
+<p>Webhookとは、データを送信する先を設定することです。</p>
+<p>LINEから入力されたデータをどこのURLに送信するかを設定します。</p>
+<aside class="warning"><p>今回はGASのURLに送信しますので、webhook設定で行います。</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="LINE公式アカウント機能の設定" duration="0">
+        <p>LINE Developersの機能では、高度なMessaging APIの設定などは行えますが、簡単な応答メッセージや、挨拶メッセージの設定は、LINE official Account Managerにて行います。その他、チャネルのアイコンや名称、リッチメニューの設定などもLINE official Account Managerにて行います。</p>
+<h2 is-upgraded><strong>応答メッセージのOFF</strong></h2>
+<aside class="special"><p>応答メッセージがONの場合、初期設定で設定されているメッセージが返答されます。</p>
+<p>このままONにしておくと、チャットボットと応答メッセージの２つのメッセージが返答されますので、応答メッセージをOFFにすることによりチャットボットからの返答だけにします。</p>
+</aside>
+<p>では設定を行います。</p>
+<p>【MessagingAPI設定】タブから、下部にある応答メッセージの編集ボタンをクリックします。するLINE official Account Managerに飛びます。</p>
+<p class="image-container"><img style="width: 526.00px" src="img\\f5d708c1013c2856.png"></p>
+<p>LINE official Account Managerの画面から、応答設定にある、【応答メッセージ】をOFFにします。</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\77d477d157eafd30.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="スプレッドシートおよびGASの作成" duration="0">
+        <p>データベースとして使用するスプレッドシートとGASの作成を行います。</p>
+<p>今回コード(プログラム)は、事前に作成しておりますのでそちらを利用します。</p>
+<h2 is-upgraded><strong>スプレッドシートのコピー</strong></h2>
+<p>下記アドレスの開きスプレッドシートを各自のマイドライブにコピーしてください。</p>
+<p><a href="https://docs.google.com/spreadsheets/d/1F2cuETljRVTtrJf7xeIAhTMWeetvdnk9LXpu1TpRqfs/edit?usp=sharing" target="_blank"><paper-button class="colored" raised>スプレッドシートを開く</paper-button></a></p>
+<p class="image-container"><img style="width: 547.00px" src="img\\f53154ba984c703d.png"></p>
+<p class="image-container"><img style="width: 402.00px" src="img\\a9c7663db8a0c99d.png"></p>
+<h2 is-upgraded><strong>アクセストークンの記載</strong></h2>
+<p><strong>５．チャネルアクセストークン</strong>の発行でLINEdevelopersで発行しましたアクセストークン(長期)を【設定】シートのセルC7に貼り付けます。</p>
+<aside class="warning"><p>チャネルアクセストークの始まりが＋やーの場合、うまく設定されない場合があります。</p>
+<p>その際は、LINE developersでMessegingAPI設定⇒チャネルアクセストークンの右側にある【再発行】のボタンを押下して、先頭部分の文字列が、英数字のもの再発行して貼り付けてください。</p>
+</aside>
+<h2 is-upgraded><img style="width: 624.00px" src="img\\2a9af0bef964a2e6.png"></h2>
+<p>kintoneで取得した</p>
+<ul>
+<li>kintoneのURL</li>
+<li>施設管理アプリID</li>
+<li>施設予約管理アプリID</li>
+<li>施設管理アプリAPIトークン</li>
+<li>施設予約管理アプリAPIトークン</li>
+</ul>
+<p>をC列に記載していきます。</p>
+<h2 is-upgraded><strong>AppsScriptの起動のデプロイ</strong></h2>
+<p>GASのコードが記載されているか確認をします。</p>
+<p>スプレッドシートから「拡張機能」→「Apps Script」を選択してます。</p>
+<p>（1回選択するだけだと、開かないことがあるので、その時はもう1度同じように選択してください。）</p>
+<p>スクリプトエディタが開き、今回使用するコードがみられます。</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\b0a629cec2c31813.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\\bbb035b307880ece.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="新しいデプロイの実行" duration="0">
+        <p>保存が完了しましたら、デプロイをします。</p>
+<aside class="special"><p>デプロイとは、開発したスクリプトをサーバー上に展開して利用できるようにすることです。</p>
+</aside>
+<p>では、実際にやってみましょう。</p>
+<p>右上にある、「デプロイ」ボタンから「新しいデプロイ」を選択します。</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\26747880308ea097.png"></p>
+<p>新しいデプロイ画面でウェブアプリを選択します。</p>
+<p>そして各項目を入力します。</p>
+<pre>・説明
+ 例）ハンズオンデプロイ初回
+ ※この欄は空欄でもかまいません
+・ウェブアプリ
+ 自分
+・アクセスできるユーザー
+ 全員</pre>
+<p>に設定して、デプロイボタンを押します。</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\de050cfb643c8789.png"></p>
+<p>初めてそのコードをデプロイするときは、承認してもよいかの確認がありますので</p>
+<p>「アクセスを承認」ボタンを押します。</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\dc4ee6efeaf3917.png"></p>
+<p>次にどのアカウントで承認するか選択します。</p>
+<p>スプレッドシートおよびGASを作成したアカウントを選択します。</p>
+<aside class="special"><p>表示されている言語が英語になっている場合、左下にある言語設定を、「日本語」に変更してください。</p>
+</aside>
+<p class="image-container"><img style="width: 497.00px" src="img\\eca2a789b26362ac.png"></p>
+<aside class="warning"><p>ここが、要注意ポイントです。</p>
+<p>デプロイするコードはスプレッドシートなどにアクセスするため、Googleから注意画面が表示されます。</p>
+<p>「安全なページに戻る」を押すと、先に進まずに戻りますので、左下に表示されている「詳細」をクリックします。</p>
+</aside>
+<p class="image-container"><img style="width: 624.00px" src="img\\bfb827f9d74839c2.png"></p>
+<aside class="warning"><p>詳細が展開されましたら、【〇〇〇〇〇（ファイル名）（安全ではないページ）に移動】をクリックします。</p>
+</aside>
+<p class="image-container"><img style="width: 624.00px" src="img\\2553be3eec543334.png"></p>
+<p>作成したGASがスプレッドシートのデータを編集したり、外部サービス(今回であれば、LINEDevelopers)へ接続してもよいかの確認が来ますので、許可ボタンを押します。</p>
+<p class="image-container"><img style="width: 488.00px" src="img\\6344b3d02c1bad53.png"></p>
+<p>デプロイが完了です。</p>
+<p>以下の画面が表示されます。</p>
+<p>ウェブアプリに表示されているURLが、作成をしたWEBアプリのURLです。</p>
+<aside class="special"><p>こちらをLINE Developersのwebhookの送信先に設定しますのでコピーしてください。</p>
+</aside>
+<p class="image-container"><img style="width: 624.00px" src="img\\1ceae49b24faeea.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="webhook設定" duration="0">
+        <p>先ほどGASで作成したWEBアプリのURLをwebhookの送信先として設定します。</p>
+<p>LINEDevelopersの画面に戻り、MessagingAPI設定タブを選択し、Webhook設定のWebhook URLのところに、先ほどコピーしたWEBアプリのURLを貼り付けます。</p>
+<p>貼り付けて更新ボタンを押し、そしてwebhookの利用にチェックをいれます。</p>
+<aside class="warning"><p>自動でWebhookの利用にチェックが入りませんので、ご注意ください。</p>
+</aside>
+<p class="image-container"><img style="width: 624.00px" src="img\\68e0a7edfb02517e.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="ChatGPTのAPIキーの取得" duration="0">
+        <p>OPENAIのApps画面にてAPIを選択します</p>
+<p>https://platform.openai.com/apps</p>
+<p>【API keys】を選択して、【Create new secret key】を選択</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\a7e80e17df4eedea.png"></p>
+<p>何用に取得したAPIかをわかるようにNAMEに、入力し、【Create secret key】 を選択</p>
+<p>API keyが発行されるのでコピー</p>
+<p class="image-container"><img style="width: 619.00px" src="img\\ff9167564a0ff87c.png"></p>
+<p>先ほどのスプレッドシートのセルC8に貼り付け</p>
+<h2 is-upgraded><img style="width: 624.00px" src="img\\2a9af0bef964a2e6.png"></h2>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="完成！動くか試してみましょう！" duration="0">
+        <p>以上で、完了となります。</p>
+<p>実際に、動くか皆さんのLINEに友だち登録をして、動作するか試してみましょう。</p>
+<p>LINEDevelopersから、MessagingAPI設定タブを選択します。</p>
+<p>するとQRコードが表示されておりますので、こちらをスマホで読み込んで友だち登録します。</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\cf0c1a81d421dab7.png"></p>
+<p>以下のようにメッセージがかえってくれば成功です！！</p>
+<p class="image-container"><img style="width: 280.82px" src="img\\801c07c9406f89d5.png"></p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
